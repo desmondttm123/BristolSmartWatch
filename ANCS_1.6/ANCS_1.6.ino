@@ -74,7 +74,7 @@ void time(void) {
         u8g.print("0");
         u8g.setPrintPos(29, 40);
         u8g.print(hour);
-    }else{
+    } else{
         u8g.setPrintPos(20, 40);
         u8g.print(hour);
     }
@@ -408,5 +408,4 @@ void loop()
         mySerial.write(Title);
 
     }
-
 }
