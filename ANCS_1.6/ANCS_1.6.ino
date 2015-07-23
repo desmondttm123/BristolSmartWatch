@@ -2,6 +2,8 @@
 #include "U8glib.h"
 #include <DS3231.h>
 #include <Wire.h>
+#include "Clock.hpp"
+#include "string.h"
 
 const int ANCS8SIZE = 8 + 8;
 const int INDEX_EVENT = 8;
@@ -374,14 +376,7 @@ void loop()
                 EMAIL = true;
                 break;
         }
-
-        Title[0] = 'A';
-        Title[1] = 'T';
-        Title[2] = '+';
-        Title[3] = 'A';
-        Title[4] = 'N';
-        Title[5] = 'C';
-        Title[6] = 'S';
+        strcpy(Title, "AT+ANCS");
         Title[7] = string.charAt(12);
         Title[8] = string.charAt(13);
         Title[9] = string.charAt(14);
@@ -389,16 +384,8 @@ void loop()
         Title[11] = '1';
         Title[12] = '2';
         Title[13] = '2';
-
-        Message[0] = 'A';
-        Message[1] = 'T';
-        Message[2] = '+';
-        Message[3] = 'A';
-        Message[4] = 'N';
-        Message[5] = 'C';
-        Message[6] = 'S';
-        Message[7] = string.charAt(12);
-        Message[8] = string.charAt(13);
+        
+        strcpy(Message, "AT+ANCS");
         Message[9] = string.charAt(14);
         Message[10] = string.charAt(15);
         Message[11] = '3';
