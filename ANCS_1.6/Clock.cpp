@@ -1,30 +1,30 @@
-/*
-  Clock.cpp - Library for flashing Clock code.
-  Created by David A. Mellis, November 2, 2007.
-  Released into the public domain.
-*/
+#include "Clock.hpp"
 
-#include "Arduino.h"
-#include "Clock.hpp"
+String Clock::GetTime() {
+      String time = "";
+      int second, minute, hour, date, 
+          month, year, temperature, DoW;
+      second = timer.getSecond();
+      minute = timer.getMinute();
+      hour = timer.getHour(h12, PM);
+      date = timer.getDate();
+      month = timer.getMonth(Century);
+      year = timer.getYear();
+      temperature = timer.getTemperature();
+      DoW = timer.getDoW();
 
-Clock::Clock(int pin)
-{
-  pinMode(pin, OUTPUT);
-  _pin = pin;
-}
-
-void Clock::dot()
-{
-  digitalWrite(_pin, HIGH);
-  delay(250);
-  digitalWrite(_pin, LOW);
-  delay(250);  
-}
-
-void Clock::dash()
-{
-  digitalWrite(_pin, HIGH);
-  delay(1000);
-  digitalWrite(_pin, LOW);
-  delay(250);
+      if(hour<10){
+        time+="0"+hour;
+      } else{
+        time+=hour;
+      }
+      time+=":";
+      if(minute < 10) {
+        time+="0";
+        time+=minute;
+      }
+      else {
+        time+=minute;
+      }
+      return time;
 }

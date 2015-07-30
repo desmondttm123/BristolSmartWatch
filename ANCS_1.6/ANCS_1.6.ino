@@ -3,7 +3,6 @@
 #include <DS3231.h>
 #include <Wire.h>
 #include "Clock.hpp"
-#include "string.h"
 
 const int ANCS8SIZE = 8 + 8;
 const int INDEX_EVENT = 8;
@@ -44,7 +43,9 @@ char Number = '0';
 int ParseEnding;
 
 // Decleration for RTC
-DS3231 Clock;
+DS3231 timer;
+Clock clock;
+
 bool Century = false;
 bool h12;
 bool PM;
@@ -56,18 +57,16 @@ byte year, month, date, DoW, hour, minute, second;
 U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 SoftwareSerial mySerial(10, 16); // RX, TX
 
-
 void time(void) {
-
     int second, minute, hour, date, month, year, temperature;
-    second = Clock.getSecond();
-    minute = Clock.getMinute();
-    hour = Clock.getHour(h12, PM);
-    date = Clock.getDate();
-    month = Clock.getMonth(Century);
-    year = Clock.getYear();
-    temperature = Clock.getTemperature();
-    DoW = Clock.getDoW();
+    second = timer.getSecond();
+    minute = timer.getMinute();
+    hour = timer.getHour(h12, PM);
+    date = timer.getDate();
+    month = timer.getMonth(Century);
+    year = timer.getYear();
+    temperature = timer.getTemperature();
+    DoW = timer.getDoW();
 
     u8g.setFont(u8g_font_10x20);
 
@@ -184,14 +183,15 @@ void setup()
     pinMode(vibrate, OUTPUT);
     digitalWrite(vibrate, LOW);
     mySerial.begin(9600);
-
-
+    
 }
 
 String buffer = "";
 void loop() 
 {
 
+    Serial.println(clock.GetTime());
+    
     //*********************************************************************************************************************
     if (digitalRead(buttonstate) == LOW) {
         delay(100);
@@ -285,12 +285,14 @@ void loop()
             String data2 = temp.substring(ending+10);// contains second part of message with ANCS, needs to be filtered again
             // Serial.println(data2);
 
+            //When there is no data left to be read from serial port
+            //print data to the screen
             if (!mySerial.available()) {
                 if (UID == false) {
                     Name = data;
                 }else if (UID ==true){
                     Subject2 = data+data2;
-                    Serial.println(Subject2);
+                    //Serial.println(Subject2);
                 }
 
                 int length = parsedSubject2.length();
@@ -319,7 +321,7 @@ void loop()
                 buffer = "";
                 delay(200);
                 if (printed == true) {
-                    mySerial.write(Message);
+                    //mySerial.write(Message);
                     buffer = "";
                     printed = false;
                     UID = true;
@@ -392,7 +394,8 @@ void loop()
         Message[12] = '9';
         Message[13] = '2';
 
-        mySerial.write(Title);
+        //mySerial.write(Title);
+       
 
     }
 }
