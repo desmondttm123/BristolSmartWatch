@@ -242,7 +242,6 @@ void loop()
         break;
     }
 
-
     Title[0] = 'A';
     Title[1] = 'T';
     Title[2] = '+';
@@ -273,10 +272,8 @@ void loop()
     Message[12] = '9';
     Message[13] = '2';
 
-
     mySerial.write(Title);
 
   }
-
 }
 
