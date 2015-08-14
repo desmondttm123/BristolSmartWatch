@@ -50,49 +50,46 @@ SoftwareSerial mySerial(10, 16); // RX, TX
 
 Screen displayScreen(&u8g);
 void time(void) {
-    displayScreen.DrawTime(clock.GetTime());
-    displayScreen.DrawDate(clock.GetDate());
-    displayScreen.DrawTemperature(clock.GetTemperature());
+  displayScreen.DrawTime(clock.GetTime());
+  displayScreen.DrawDate(clock.GetDate());
+  displayScreen.DrawTemperature(clock.GetTemperature());
 }
 
 void setup()
 {
-    //Clock.setHour(21);
-    Wire.begin();
-    Serial.begin(9600);
-    pinMode(arduinoLED, OUTPUT);
-    digitalWrite(arduinoLED, LOW);
+  //Clock.setHour(21);
+  Wire.begin();
+  Serial.begin(9600);
+  pinMode(arduinoLED, OUTPUT);
+  digitalWrite(arduinoLED, LOW);
 
-    //Button number 1 ************************************************************************************
-    pinMode(buttonstate, INPUT_PULLUP);           // set pin to input
-    digitalWrite(buttonstate, HIGH);
+  //Button number 1 ************************************************************************************
+  pinMode(buttonstate, INPUT_PULLUP);           // set pin to input
+  digitalWrite(buttonstate, HIGH);
 
 
-    //Button number 2 ************************************************************************************
-    pinMode(sleepwake, INPUT_PULLUP);           // set pin to input
-    digitalWrite(sleepwake, HIGH);
+  //Button number 2 ************************************************************************************
+  pinMode(sleepwake, INPUT_PULLUP);           // set pin to input
+  digitalWrite(sleepwake, HIGH);
 
-    //tilt screen ************************************************************************************
-    pinMode(tiltscreen, INPUT_PULLUP);           // set pin to input
-    digitalWrite(tiltscreen, LOW);
+  //tilt screen ************************************************************************************
+  pinMode(tiltscreen, INPUT_PULLUP);           // set pin to input
+  digitalWrite(tiltscreen, LOW);
 
-    // FlashLight  ************************************************************************************
-    pinMode(led, OUTPUT);
-    digitalWrite(led , LOW);
+  // FlashLight  ************************************************************************************
+  pinMode(led, OUTPUT);
+  digitalWrite(led , LOW);
 
-    //Vibration Motor should be connected to GND  ************************************************************************************
-    pinMode(vibrate, OUTPUT);
-    digitalWrite(vibrate, LOW);
-    mySerial.begin(9600);
-    
+  //Vibration Motor should be connected to GND  ************************************************************************************
+  pinMode(vibrate, OUTPUT);
+  digitalWrite(vibrate, LOW);
+  mySerial.begin(9600);
+
 }
 
 String buffer = "";
 void loop() 
 {
-
-
-  //*********************************************************************************************************************
   if (digitalRead(buttonstate) == LOW) {
     delay(100);
     if (screen == 0) {
@@ -109,38 +106,34 @@ void loop()
       screensleep = 1;
     }
     else {
-     screensleep = 0;
+      screensleep = 0;
     }
   }
-// Turn on the Flash LiGHT  ************************************************************************************
+
+  // Turn on the Flash LiGHT 
   if (screen == 1) {
     digitalWrite(led , HIGH);
   } else {
     digitalWrite(led, LOW);
   }
 
-
-  //if (digitalRead(tiltscreen) == LOW ) {
-    u8g.firstPage();
-    do {
-      if (Number != '0') {
-        u8g.setFont(u8g_font_5x7);
-        u8g.setPrintPos(0, 10);
-        u8g.print(Number);
-        u8g.setPrintPos(10, 10);
-        if (Number == '1') {
-          u8g.print("New Notification");
-        }
-        else {
-          u8g.print("New Notifications");
-        }
+  u8g.firstPage();
+  do {
+    if (Number != '0') {
+      u8g.setFont(u8g_font_5x7);
+      u8g.setPrintPos(0, 10);
+      u8g.print(Number);
+      u8g.setPrintPos(10, 10);
+      if (Number == '1') {
+        u8g.print("New Notification");
       }
-      time();
+      else {
+        u8g.print("New Notifications");
+      }
     }
-    while ( u8g.nextPage() );
-
-  //*********************************************************************************************************************
-
+    time();
+  }
+  while ( u8g.nextPage() );
 
   while (mySerial.available()) {
     char c = (char)mySerial.read();
@@ -149,22 +142,21 @@ void loop()
       buffer += c;
     }
 
-   Serial.println(buffer); // try and increase the amount of messega that can fit in this section
-      if (buffer.indexOf("OK+ANCS:") == 15) {  
+    Serial.println(buffer); // try and increase the amount of messega that can fit in this section
+    if (buffer.indexOf("OK+ANCS:") == 15) {  
       temp =  buffer.substring(26); // temp contains all the unclean data that needs to be edited
       int ending = temp.indexOf("OK+ANC");
       String data = temp.substring(1, ending); // contains the first part is name followed by message
       String data2 = temp.substring(ending+10);// contains second part of message with ANCS, needs to be filtered again
-     // Serial.println(data2);
-     
+      // Serial.println(data2);
+
       if (!mySerial.available()) {
-         if (UID == false) {
+        if (UID == false) {
           Name = data;
-       }else if (UID ==true){
-         Subject2 = data+data2;
-         Serial.println(Subject2);
-       }
-       
+        }else if (UID ==true){
+          Subject2 = data+data2;
+          Serial.println(Subject2);
+        }
 
         int length = parsedSubject2.length();
         if (length >= 1) {
@@ -174,14 +166,12 @@ void loop()
         Line1 = Subject2.substring(0, 15);
         Line2 = Subject2.substring(15);
 
-
         u8g.firstPage();
         do {
-
           u8g.setFont(u8g_font_5x7);
           u8g.setPrintPos(0, 10);
           u8g.print("From : ");
-          
+
           u8g.setPrintPos(30, 10);
           u8g.print(Name);
           //****************************************************************************************************************
@@ -193,7 +183,7 @@ void loop()
         buffer = "";
         delay(200);
         if (printed == true) {
-           mySerial.write(Message);
+          mySerial.write(Message);
           buffer = "";
           printed = false;
           UID = true;
@@ -245,7 +235,7 @@ void loop()
         MISSEDCALL = true;
         break;
       case '4':
-       SMS = true;
+        SMS = true;
         break;
       case '6':
         EMAIL = true;
