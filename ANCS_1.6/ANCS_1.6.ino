@@ -58,27 +58,11 @@ byte year, month, date, DoW, hour, minute, second;
 U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 SoftwareSerial mySerial(10, 16); // RX, TX
 
+Screen displayScreen(&u8g);
 void time(void) {
-    int temperature;
-    temperature = timer.getTemperature();
-
-    u8g.setFont(u8g_font_10x20);
-    u8g.setPrintPos(18, 40);
-    u8g.print(clock.GetTime());
-    Serial.println(clock.GetDate());
-    //Date**************************************************************************************
-    u8g.setFont(u8g_font_5x7);
-
-    u8g.setPrintPos(25, 50);
-    u8g.print(clock.GetDate());
-
-    u8g.setPrintPos(95, 10);
-    u8g.print(clock.GetTemperature());
-    u8g.setPrintPos(105, 6);
-    u8g.print(".");
-    u8g.setPrintPos(110, 10);
-    u8g.print("C");
-
+    displayScreen.DrawTime(clock.GetTime());
+    displayScreen.DrawDate(clock.GetDate());
+    displayScreen.DrawTemperature(clock.GetTemperature());
 }
 
 void setup()
@@ -164,38 +148,6 @@ void loop()
       time();
     }
     while ( u8g.nextPage() );
-//  }else{
-//    
-//       u8g.firstPage();
-//    do {
-//         u8g.print("h");
-//      }
-//   while ( u8g.nextPage() ); 
-//  }
-
-// To View The Current Message 
-//  if (screen == 1 && screensleep == 0) {
-//       
-//    u8g.firstPage();
-//   do {
-//
-//      u8g.setFont(u8g_font_5x7);
-//
-//      u8g.setPrintPos(0, 10);
-//      u8g.print("From : ");
-//      u8g.setPrintPos(35, 10);
-//      u8g.print(Name);
-//      u8g.setPrintPos(0, 25);
-//      u8g.print(Line1);
-//     
-//      u8g.setPrintPos(0, 35);
-//      u8g.print(Line2);
-//
-//    }
-//    while ( u8g.nextPage() );
-//  }
-
-
 
   //*********************************************************************************************************************
 
@@ -352,3 +304,4 @@ void loop()
   }
 
 }
+
