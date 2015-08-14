@@ -58,95 +58,21 @@ U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 SoftwareSerial mySerial(10, 16); // RX, TX
 
 void time(void) {
-    int second, minute, hour, date, month, year, temperature;
-    second = timer.getSecond();
-    minute = timer.getMinute();
-    hour = timer.getHour(h12, PM);
-    date = timer.getDate();
-    month = timer.getMonth(Century);
-    year = timer.getYear();
+    int temperature;
     temperature = timer.getTemperature();
-    DoW = timer.getDoW();
 
     u8g.setFont(u8g_font_10x20);
-
-    if(hour<10){
-        u8g.setPrintPos(18, 40);
-        u8g.print("0");
-        u8g.setPrintPos(29, 40);
-        u8g.print(hour);
-    } else{
-        u8g.setPrintPos(20, 40);
-        u8g.print(hour);
-    }
-
-    u8g.setPrintPos(38, 40);
-    u8g.print(":");
-
-    if (minute < 10) {
-        u8g.setPrintPos(47, 40);
-        u8g.print("0");
-        u8g.setPrintPos(58, 40);
-        u8g.print(minute);
-    }
-    else {
-        u8g.setPrintPos(45, 40);
-        u8g.print(minute);
-    }
-
+    u8g.setPrintPos(18, 40);
+    u8g.print(clock.GetTime());
+    Serial.println(clock.GetDate());
     //Date**************************************************************************************
     u8g.setFont(u8g_font_5x7);
 
     u8g.setPrintPos(25, 50);
-    if (DoW == 7)
-        u8g.print("Sun");
-    if (DoW == 1)
-        u8g.print("Mon");
-    if (DoW == 2)
-        u8g.print("Tue");
-    if (DoW == 3)
-        u8g.print("Wed");
-    if (DoW == 4)
-        u8g.print("Thu");
-    if (DoW == 5)
-        u8g.print("Fri");
-    if (DoW == 6)
-        u8g.print("Sat");
-
-    u8g.setPrintPos(45, 50);
-    u8g.print(date);
-    u8g.setPrintPos(60, 50);
-
-    if (month == 1)
-        u8g.print("January");
-    if (month == 2)
-        u8g.print("February");
-    if (month == 3)
-        u8g.print("March");
-    if (month == 4)
-        u8g.print("April");
-    if (month == 5)
-        u8g.print("May");
-    if (month == 6)
-        u8g.print("June");
-    if (month == 7)
-        u8g.print("July");
-    if (month == 8)
-        u8g.print("August");
-    if (month == 9)
-        u8g.print("September");
-    if (month == 10)
-        u8g.print("October");
-    if (month == 11)
-        u8g.print("November");
-    if (month == 12)
-        u8g.print("December");
-
-    u8g.setPrintPos(90, 50);
-    u8g.print(year);
+    u8g.print(clock.GetDate());
 
     u8g.setPrintPos(95, 10);
-    u8g.print(temperature);
+    u8g.print(clock.GetTemperature());
     u8g.setPrintPos(105, 6);
     u8g.print(".");
     u8g.setPrintPos(110, 10);
@@ -189,9 +115,7 @@ void setup()
 String buffer = "";
 void loop() 
 {
-
-    Serial.println(clock.GetTime());
-    
+ 
     //*********************************************************************************************************************
     if (digitalRead(buttonstate) == LOW) {
         delay(100);

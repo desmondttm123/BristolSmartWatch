@@ -12,5 +12,7 @@ private:
 public:
     Clock(){};
     String GetTime();
+    String GetDate();
+    int GetTemperature();
 };
 #endif
