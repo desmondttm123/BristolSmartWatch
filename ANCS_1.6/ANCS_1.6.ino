@@ -10,7 +10,6 @@ const int INDEX_EVENT = 8;
 const int INDEX_CATEGORY = 9;
 char Title [15];
 char Message[15];
-char Time[15];
 boolean printed = true;
 boolean UID = false;
 boolean SMS = false;
@@ -26,8 +25,6 @@ int tiltscreen = 5;
 int vibrate = 4;
 int led = 9;
 int arduinoLED = 17;
-
-int i = 20;
 
 String Name = "";
 String Subject = "";
@@ -46,13 +43,6 @@ int ParseEnding;
 // Decleration for RTC
 DS3231 timer;
 Clock clock;
-
-bool Century = false;
-bool h12;
-bool PM;
-byte ADay, AHour, AMinute, ASecond, ABits;
-bool ADy, A12h, Apm;
-byte year, month, date, DoW, hour, minute, second;
 
 // Declare screen Driver 
 U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
@@ -153,8 +143,7 @@ void loop()
 
 
   while (mySerial.available()) {
-       char c = (char)mySerial.read();
-
+    char c = (char)mySerial.read();
 
     if ((int)c != 0) {
       buffer += c;
@@ -228,17 +217,13 @@ void loop()
           digitalWrite(vibrate, LOW);
         }
 
-
-
       }
 
     }
 
-
     if (ANCS8SIZE > buffer.length()) {
       return;
     }
-
 
     int indexANCS8 = buffer.indexOf("OK+ANCS8");
     if (-1 == indexANCS8) continue;
