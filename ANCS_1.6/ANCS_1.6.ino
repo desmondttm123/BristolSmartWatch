@@ -148,7 +148,6 @@ void loop()
       int ending = temp.indexOf("OK+ANC");
       String data = temp.substring(1, ending); // contains the first part is name followed by message
       String data2 = temp.substring(ending+10);// contains second part of message with ANCS, needs to be filtered again
-      // Serial.println(data2);
 
       if (!mySerial.available()) {
         if (UID == false) {
@@ -168,13 +167,13 @@ void loop()
 
         u8g.firstPage();
         do {
+          //Print Message Sender
           u8g.setFont(u8g_font_5x7);
           u8g.setPrintPos(0, 10);
           u8g.print("From : ");
-
           u8g.setPrintPos(30, 10);
           u8g.print(Name);
-          //****************************************************************************************************************
+          //Print Message Subject
           u8g.setPrintPos(0, 20);
           u8g.print(Subject2);
           //***************************************************************************************************************
@@ -182,21 +181,18 @@ void loop()
         while ( u8g.nextPage() );
         buffer = "";
         delay(200);
-        if (printed == true) {
+        if(printed == true) {
           mySerial.write(Message);
           buffer = "";
           printed = false;
           UID = true;
           Display = false;
-        }
-
-        else {
+        } else {
           printed = true;
           UID = false;
           buffer = "";
           delay(2000); // delay for when the message appears
           Display = true;
-
         }
 
         if (Display == false) {
@@ -206,9 +202,7 @@ void loop()
         } else {
           digitalWrite(vibrate, LOW);
         }
-
       }
-
     }
 
     if (ANCS8SIZE > buffer.length()) {
@@ -242,13 +236,7 @@ void loop()
         break;
     }
 
-    Title[0] = 'A';
-    Title[1] = 'T';
-    Title[2] = '+';
-    Title[3] = 'A';
-    Title[4] = 'N';
-    Title[5] = 'C';
-    Title[6] = 'S';
+    strncpy(Title, "AT+ANCS", 7);
     Title[7] = string.charAt(12);
     Title[8] = string.charAt(13);
     Title[9] = string.charAt(14);
@@ -257,13 +245,7 @@ void loop()
     Title[12] = '2';
     Title[13] = '2';
 
-    Message[0] = 'A';
-    Message[1] = 'T';
-    Message[2] = '+';
-    Message[3] = 'A';
-    Message[4] = 'N';
-    Message[5] = 'C';
-    Message[6] = 'S';
+    strncpy(Message, "AT+ANCS", 7);
     Message[7] = string.charAt(12);
     Message[8] = string.charAt(13);
     Message[9] = string.charAt(14);
