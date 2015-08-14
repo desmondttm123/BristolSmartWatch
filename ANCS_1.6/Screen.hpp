@@ -8,8 +8,8 @@ class Screen
 private:
 
 public:
-  void DrawDate(String date){};
-  void DrawTime(String time){};
-  void DrawTemperature(){};
+  void DrawDate(String date);
+  void DrawTime(String time);
+  void DrawTemperature(String temperature);
 };
 #endif
