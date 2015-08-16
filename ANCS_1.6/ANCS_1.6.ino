@@ -8,6 +8,7 @@
 const int ANCS8SIZE = 8 + 8;
 const int INDEX_EVENT = 8;
 const int INDEX_CATEGORY = 9;
+const int arduinoLED = 17;
 char Title [15];
 char Message[15];
 boolean printed = true;
@@ -24,7 +25,6 @@ int sleepwake = 6;
 int tiltscreen = 5;
 int vibrate = 4;
 int led = 9;
-int arduinoLED = 17;
 
 String Name = "";
 String Subject = "";
@@ -237,22 +237,12 @@ void loop()
     }
 
     strncpy(Title, "AT+ANCS", 7);
-    Title[7] = string.charAt(12);
-    Title[8] = string.charAt(13);
-    Title[9] = string.charAt(14);
-    Title[10] = string.charAt(15);
-    Title[11] = '1';
-    Title[12] = '2';
-    Title[13] = '2';
+    strncpy(&Title[7], &string.c_str()[12],4);
+    strncpy(&Title[11], "122", 3);
 
     strncpy(Message, "AT+ANCS", 7);
-    Message[7] = string.charAt(12);
-    Message[8] = string.charAt(13);
-    Message[9] = string.charAt(14);
-    Message[10] = string.charAt(15);
-    Message[11] = '3';
-    Message[12] = '9';
-    Message[13] = '2';
+    strncpy(&Message[7], &string.c_str()[12],4);
+    strncpy(&Message[11], "392", 3);
 
     mySerial.write(Title);
 
