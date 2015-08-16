@@ -50,10 +50,16 @@ U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 SoftwareSerial mySerial(10, 16); // RX, TX
 
 Screen displayScreen(&u8g);
-void time(void) {
-  displayScreen.DrawTime(clock.GetTime());
-  displayScreen.DrawDate(clock.GetDate());
-  displayScreen.DrawTemperature(clock.GetTemperature());
+
+void DrawScreen(void) {
+  u8g.firstPage();
+  do {
+    displayScreen.DrawNotifications(Number);
+    displayScreen.DrawTime(clock.GetTime());
+    displayScreen.DrawDate(clock.GetDate());
+    displayScreen.DrawTemperature(clock.GetTemperature());
+  }
+  while ( u8g.nextPage() );
 }
 
 void setup()
@@ -87,9 +93,7 @@ void setup()
   mySerial.begin(9600);
 
 }
-void drawMessage() {
-   
-}
+
 void checkButtons() {
   if (digitalRead(buttonstate) == LOW) {
     delay(100);
@@ -118,17 +122,8 @@ void checkButtons() {
     digitalWrite(led, LOW);
   }
 }
-void loop() 
-{
-  checkButtons();  
 
-  u8g.firstPage();
-  do {
-    displayScreen.DrawNotifications(Number);
-    time();
-  }
-  while ( u8g.nextPage() );
-
+void BluetoothCommunications() {
   while (mySerial.available()) {
     char c = (char)mySerial.read();
 
@@ -227,5 +222,12 @@ void loop()
     mySerial.write(Title);
 
   }
+}
+
+void loop() 
+{
+  checkButtons();  
+  DrawScreen();
+  BluetoothCommunications(); 
 }
 
