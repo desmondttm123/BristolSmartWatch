@@ -12,5 +12,7 @@ public:
   void DrawDate(String date);
   void DrawTime(String time);
   void DrawTemperature(int temperate);
+  void DrawNotifications(char numOfNotifications);
+  void DrawMessageSender(String sender, String subject);
 };
 #endif

@@ -26,6 +26,7 @@ int tiltscreen = 5;
 int vibrate = 4;
 int led = 9;
 
+String buffer = "";
 String Name = "";
 String Subject = "";
 String FirstLine = "";
@@ -86,10 +87,10 @@ void setup()
   mySerial.begin(9600);
 
 }
-
-String buffer = "";
-void loop() 
-{
+void drawMessage() {
+   
+}
+void checkButtons() {
   if (digitalRead(buttonstate) == LOW) {
     delay(100);
     if (screen == 0) {
@@ -116,21 +117,14 @@ void loop()
   } else {
     digitalWrite(led, LOW);
   }
+}
+void loop() 
+{
+  checkButtons();  
 
   u8g.firstPage();
   do {
-    if (Number != '0') {
-      u8g.setFont(u8g_font_5x7);
-      u8g.setPrintPos(0, 10);
-      u8g.print(Number);
-      u8g.setPrintPos(10, 10);
-      if (Number == '1') {
-        u8g.print("New Notification");
-      }
-      else {
-        u8g.print("New Notifications");
-      }
-    }
+    displayScreen.DrawNotifications(Number);
     time();
   }
   while ( u8g.nextPage() );
@@ -165,22 +159,8 @@ void loop()
         Line1 = Subject2.substring(0, 15);
         Line2 = Subject2.substring(15);
 
-        u8g.firstPage();
-        do {
-          //Print Message Sender
-          u8g.setFont(u8g_font_5x7);
-          u8g.setPrintPos(0, 10);
-          u8g.print("From : ");
-          u8g.setPrintPos(30, 10);
-          u8g.print(Name);
-          //Print Message Subject
-          u8g.setPrintPos(0, 20);
-          u8g.print(Subject2);
-          //***************************************************************************************************************
-        }
-        while ( u8g.nextPage() );
+        displayScreen.DrawMessageSender(Name, Subject2);
         buffer = "";
-        delay(200);
         if(printed == true) {
           mySerial.write(Message);
           buffer = "";
