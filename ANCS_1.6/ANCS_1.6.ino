@@ -9,6 +9,7 @@ const int ANCS8SIZE = 8 + 8;
 const int INDEX_EVENT = 8;
 const int INDEX_CATEGORY = 9;
 const int arduinoLED = 17;
+
 char Title [15];
 char Message[15];
 boolean printed = true;
@@ -141,7 +142,7 @@ void BluetoothCommunications() {
       if (!mySerial.available()) {
         if (UID == false) {
           Name = data;
-        }else if (UID ==true){
+        } else if (UID ==true){
           Subject2 = data+data2;
           Serial.println(Subject2);
         }
@@ -158,14 +159,12 @@ void BluetoothCommunications() {
         buffer = "";
         if(printed == true) {
           mySerial.write(Message);
-          buffer = "";
           printed = false;
           UID = true;
           Display = false;
         } else {
           printed = true;
           UID = false;
-          buffer = "";
           delay(2000); // delay for when the message appears
           Display = true;
         }
@@ -185,42 +184,41 @@ void BluetoothCommunications() {
     }
 
     int indexANCS8 = buffer.indexOf("OK+ANCS8");
-    if (-1 == indexANCS8) continue;
     boolean complete = (indexANCS8 + ANCS8SIZE) <= buffer.length();
-    if (!complete) continue;
 
-    String string = buffer.substring(indexANCS8, indexANCS8 + ANCS8SIZE);
+    if(indexANCS8 != -1 && complete) {
+      String string = buffer.substring(indexANCS8, indexANCS8 + ANCS8SIZE);
 
-    buffer = buffer.substring(indexANCS8 + ANCS8SIZE);
+      buffer = buffer.substring(indexANCS8 + ANCS8SIZE);
 
-    Number = string.charAt(11);
-    Index = string.charAt(INDEX_CATEGORY);
+      Number = string.charAt(11);
+      Index = string.charAt(INDEX_CATEGORY);
 
-    switch (string.charAt(INDEX_CATEGORY)) {
-      case '1':
-        INCOMINGCALL = true;
-        break;
-      case '2':
-        MISSEDCALL = true;
-        break;
-      case '4':
-        SMS = true;
-        break;
-      case '6':
-        EMAIL = true;
-        break;
+      switch (string.charAt(INDEX_CATEGORY)) {
+        case '1':
+          INCOMINGCALL = true;
+          break;
+        case '2':
+          MISSEDCALL = true;
+          break;
+        case '4':
+          SMS = true;
+          break;
+        case '6':
+          EMAIL = true;
+          break;
+      }
+
+      strncpy(Title, "AT+ANCS", 7);
+      strncpy(&Title[7], &string.c_str()[12],4);
+      strncpy(&Title[11], "122", 3);
+
+      strncpy(Message, "AT+ANCS", 7);
+      strncpy(&Message[7], &string.c_str()[12],4);
+      strncpy(&Message[11], "392", 3);
+
+      mySerial.write(Title);
     }
-
-    strncpy(Title, "AT+ANCS", 7);
-    strncpy(&Title[7], &string.c_str()[12],4);
-    strncpy(&Title[11], "122", 3);
-
-    strncpy(Message, "AT+ANCS", 7);
-    strncpy(&Message[7], &string.c_str()[12],4);
-    strncpy(&Message[11], "392", 3);
-
-    mySerial.write(Title);
-
   }
 }
 
