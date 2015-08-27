@@ -33,44 +33,44 @@ String Clock::GetDate() {
     int month = timer.getMonth(Century);
     if (DoW == 7)
         string="Sun";
-    if (DoW == 1)
+    else if(DoW == 1)
         string+="Mon";
-    if (DoW == 2)
+    else if(DoW == 2)
         string+="Tue";
-    if (DoW == 3)
+    else if(DoW == 3)
         string+="Wed";       
-    if (DoW == 4)
+    else if(DoW == 4)
         string+="Thu";
-    if (DoW == 5)
+    else if(DoW == 5)
         string+="Fri";
-    if (DoW == 6)
+    else if(DoW == 6)
         string+="Sat";
     string+=" ";
     string+=date;
     string+=" ";
-    if (month == 1)
+    if(month == 1)
         string+="January";
-    if (month == 2)
+    else if(month == 2)
         string+="Febuary";
-    if (month == 3)
+    else if(month == 3)
         string+="March";
-    if (month == 4)
+    else if(month == 4)
         string+="April"; 
-    if (month == 5)
+    else if(month == 5)
         string+="May";  
-    if (month == 6)
+    else if(month == 6)
         string+="June";
-    if (month == 7)
+    else if(month == 7)
         string+="July";
-    if (month == 8)
+    else if (month == 8)
         string+="August"; 
-    if (month == 9)
+    else if(month == 9)
         string+="September";  
-    if (month == 10)
+    else if(month == 10)
         string+="October";  
-    if (month == 11)
+    else if(month == 11)
         string+="November"; 
-    if (month == 12)
+    else if(month == 12)
         string+="December";
 
     return string;

@@ -8,7 +8,7 @@ class Clock
 private:
   DS3231 timer; 
   bool PM, Century=false, h12;
-
+  
 public:
     Clock(){};
     String GetTime();
