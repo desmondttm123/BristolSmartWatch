@@ -4,6 +4,7 @@
 #include <Wire.h>
 #include "Clock.hpp"
 #include "Screen.hpp"
+#include "BluetoothCommunication.hpp"
 
 const int ANCS8SIZE = 8 + 8;
 const int INDEX_EVENT = 8;
@@ -48,10 +49,10 @@ Clock clock;
 
 // Declare screen Driver 
 U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
-SoftwareSerial mySerial(10, 16); // RX, TX
-
 Screen displayScreen(&u8g);
-
+// Bluetooth Driver
+SoftwareSerial mySerial(10, 16); // RX, TX
+BluetoothCommunication bluetoothCommunication(&displayScreen, &mySerial); 
 void DrawScreen(void) {
   u8g.firstPage();
   do {
