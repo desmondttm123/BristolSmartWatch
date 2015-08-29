@@ -94,5 +94,4 @@ String BluetoothCommunication::Read() {
       mySerial->write(Title);
     }
   }
- 
 }

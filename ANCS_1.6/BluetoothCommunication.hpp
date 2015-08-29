@@ -33,7 +33,7 @@ public:
       this->mySerial = mySerial;
     };
     String Read();
-    String GetTitle(){return Title};
-    String GetSubject(){return Subject2);
+    String GetTitle(){return Title;};
+    String GetSubject(){return Subject2;};
 };
 #endif
