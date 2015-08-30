@@ -35,5 +35,7 @@ public:
     String Read();
     String GetTitle(){return Title;};
     String GetSubject(){return Subject2;};
+    String GetName(){return Name;};
+    int GetNumber(){return Number;};
 };
 #endif

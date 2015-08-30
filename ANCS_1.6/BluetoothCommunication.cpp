@@ -1,7 +1,6 @@
 #include "BluetoothCommunication.hpp"
 String BluetoothCommunication::Read() {
   while (mySerial->available()) {
-
     char c = (char)mySerial->read();
 
     if ((int)c != 0) {

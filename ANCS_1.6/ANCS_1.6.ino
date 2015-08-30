@@ -52,7 +52,7 @@ U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 Screen displayScreen(&u8g);
 // Bluetooth Driver
 SoftwareSerial mySerial(10, 16); // RX, TX
-BluetoothCommunication bluetoothCommunications(&mySerial); 
+BluetoothCommunication bluetoothCommunication(&mySerial); 
 void DrawScreen(void) {
   u8g.firstPage();
   do {
@@ -126,7 +126,14 @@ void checkButtons() {
 }
 
 void BluetoothCommunications() {
-  while (mySerial.available()) {
+  bluetoothCommunication.Read();
+  if(bluetoothCommunication.GetName() != "") {
+    Serial.println(bluetoothCommunication.GetName());
+  } 
+  /*displayScreen.DrawMessageSender(bluetoothCommunication.GetName(), 
+                                    bluetoothCommunication.GetSubject());
+  Number = bluetoothCommunication.GetNumber();*/
+  /*while (mySerial.available()) {
     char c = (char)mySerial.read();
 
     if ((int)c != 0) {
@@ -220,7 +227,7 @@ void BluetoothCommunications() {
 
       mySerial.write(Title);
     }
-  }
+  }*/
 }
 
 void loop() 
