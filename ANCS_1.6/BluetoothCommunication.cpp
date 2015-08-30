@@ -1,5 +1,5 @@
 #include "BluetoothCommunication.hpp"
-String BluetoothCommunication::Read() {
+void BluetoothCommunication::Read() {
   while (mySerial->available()) {
     char c = (char)mySerial->read();
     
@@ -28,7 +28,6 @@ String BluetoothCommunication::Read() {
         Line1 = Subject2.substring(0, 15);
         Line2 = Subject2.substring(15);
         
-        //displayScreen->DrawMessageSender(Name, Subject2);
         buffer = "";
         if(printed == true) {
           mySerial->write(Message);
@@ -39,14 +38,13 @@ String BluetoothCommunication::Read() {
           printed = true;
           newMessage = true;
           UID = false;
-          //delay(2000); // delay for when the message appears
           Display = true;
         }
       }
     }
 
     if (ANCS8SIZE > buffer.length()) {
-      return "";
+      return; 
     }
 
     int indexANCS8 = buffer.indexOf("OK+ANCS8");
@@ -86,5 +84,5 @@ String BluetoothCommunication::Read() {
       mySerial->write(Title);
     }
   }
-  return "";
+  return; 
 }
