@@ -2,7 +2,7 @@
 String BluetoothCommunication::Read() {
   while (mySerial->available()) {
     char c = (char)mySerial->read();
-
+    
     if ((int)c != 0) {
       buffer += c;
     }
@@ -27,7 +27,7 @@ String BluetoothCommunication::Read() {
 
         Line1 = Subject2.substring(0, 15);
         Line2 = Subject2.substring(15);
-
+        
         //displayScreen->DrawMessageSender(Name, Subject2);
         buffer = "";
         if(printed == true) {
@@ -37,18 +37,11 @@ String BluetoothCommunication::Read() {
           Display = false;
         } else {
           printed = true;
+          newMessage = true;
           UID = false;
-          delay(2000); // delay for when the message appears
+          //delay(2000); // delay for when the message appears
           Display = true;
         }
-
-        /*if (Display == false) {
-          digitalWrite(vibrate, HIGH);
-          delay(300);
-          digitalWrite(vibrate, LOW);
-        } else {
-          digitalWrite(vibrate, LOW);
-        }*/
       }
     }
 
@@ -93,4 +86,5 @@ String BluetoothCommunication::Read() {
       mySerial->write(Title);
     }
   }
+  return "";
 }

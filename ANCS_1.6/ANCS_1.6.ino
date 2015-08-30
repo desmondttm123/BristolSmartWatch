@@ -126,13 +126,21 @@ void checkButtons() {
 }
 
 void BluetoothCommunications() {
+  Serial.println("hello");
   bluetoothCommunication.Read();
-  if(bluetoothCommunication.GetName() != "") {
-    Serial.println(bluetoothCommunication.GetName());
-  } 
-  /*displayScreen.DrawMessageSender(bluetoothCommunication.GetName(), 
+  if(bluetoothCommunication.GetNewMessage()) {
+    displayScreen.DrawMessageSender(bluetoothCommunication.GetName(), 
                                     bluetoothCommunication.GetSubject());
-  Number = bluetoothCommunication.GetNumber();*/
+    bluetoothCommunication.SetNewMessage(false);
+    delay(2000);
+  }
+  int temp = bluetoothCommunication.GetNumber();
+  if(temp != Number && temp > '0') {
+    digitalWrite(vibrate, HIGH);
+    delay(300);
+    digitalWrite(vibrate, LOW);
+  }
+  Number = bluetoothCommunication.GetNumber();
   /*while (mySerial.available()) {
     char c = (char)mySerial.read();
 

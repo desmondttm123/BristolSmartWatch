@@ -8,6 +8,7 @@
 class BluetoothCommunication 
 {
   SoftwareSerial *mySerial;
+  bool newMessage = false;
   char Title [15];
   char Message[15];
   boolean printed = true;
@@ -26,7 +27,7 @@ class BluetoothCommunication
   String Line2 = "";
   const int ANCS8SIZE = 8 + 8;
   const int INDEX_CATEGORY = 9;
-  int Number;
+  char Number = '0';
   char Index = '0';
 public:
     BluetoothCommunication(SoftwareSerial *mySerial){
@@ -36,6 +37,8 @@ public:
     String GetTitle(){return Title;};
     String GetSubject(){return Subject2;};
     String GetName(){return Name;};
+    bool GetNewMessage(){return newMessage;};
+    void SetNewMessage(bool value){newMessage = value;};
     int GetNumber(){return Number;};
 };
 #endif
