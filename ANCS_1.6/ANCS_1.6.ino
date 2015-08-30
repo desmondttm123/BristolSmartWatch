@@ -6,9 +6,6 @@
 #include "BluetoothCommunication.hpp"
 #include "Screen.hpp"
 
-const int ANCS8SIZE = 8 + 8;
-const int INDEX_EVENT = 8;
-const int INDEX_CATEGORY = 9;
 const int arduinoLED = 17;
 
 int screen = 0;
