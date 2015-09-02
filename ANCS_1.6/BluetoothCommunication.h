@@ -2,7 +2,7 @@
 #define BLUETOOTHCOMMUNICATION_H 
 
 #include <DS3231.h>
-#include "Screen.hpp"
+#include "Screen.h"
 #include <SoftwareSerial.h>
 
 class BluetoothCommunication 
