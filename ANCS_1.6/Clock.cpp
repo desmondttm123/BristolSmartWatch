@@ -1,4 +1,4 @@
-#include "Clock.hpp"
+#include "Clock.h"
 
 String Clock::GetTime() {
       String time = "";

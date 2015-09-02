@@ -2,9 +2,9 @@
 #include "U8glib.h"
 #include <DS3231.h>
 #include <Wire.h>
-#include "Clock.hpp"
-#include "BluetoothCommunication.hpp"
-#include "Screen.hpp"
+#include "Clock.h"
+#include "BluetoothCommunication.h"
+#include "Screen.h"
 
 const int arduinoLED = 17;
 
