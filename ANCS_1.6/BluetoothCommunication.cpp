@@ -1,4 +1,4 @@
-#include "BluetoothCommunication.hpp"
+#include "BluetoothCommunication.h"
 void BluetoothCommunication::Read() {
   while (mySerial->available()) {
     char c = (char)mySerial->read();
