@@ -15,29 +15,36 @@
      * 
      */ 
 
-void BluetoothCommunication::Read() {
-  while (mySerial->available()) {
+void BluetoothCommunication::Read() 
+{
+  while (mySerial->available()) 
+  {
     char c = (char)mySerial->read();
     
     if ((int)c != 0) {
       buffer += c;
     }
 
-    if (buffer.indexOf("OK+ANCS:") == 15) {  
+    if (buffer.indexOf("OK+ANCS:") == 15) 
+    {  
       temp =  buffer.substring(26); // temp contains all the unclean data that needs to be edited
       int ending = temp.indexOf("OK+ANC");
       String data = temp.substring(1, ending); // contains the first part is name followed by message
       String data2 = temp.substring(ending+10);// contains second part of message with ANCS, needs to be filtered again
 
-      if (!mySerial->available()) {
-        if (UID == false) {
+      if (!mySerial->available()) 
+      {
+        if (UID == false) 
+        {
           Name = data;
-        } else if (UID ==true){
+        } else if (UID ==true)
+        {
           Subject2 = data+data2;
         }
 
         int length = parsedSubject2.length();
-        if (length >= 1) {
+        if (length >= 1) 
+        {
           Subject2 = parsedSubject2.substring(0, length);
         }
 
@@ -45,12 +52,14 @@ void BluetoothCommunication::Read() {
         Line2 = Subject2.substring(15);
         
         buffer = "";
-        if(printed == true) {
+        if(printed == true) 
+        {
           mySerial->write(Message);
           printed = false;
           UID = true;
           Display = false;
-        } else {
+        } else 
+        {
           printed = true;
           newMessage = true;
           UID = false;
@@ -59,14 +68,16 @@ void BluetoothCommunication::Read() {
       }
     }
 
-    if (ANCS8SIZE > buffer.length()) {
+    if (ANCS8SIZE > buffer.length()) 
+    {
       return; 
     }
 
     int indexANCS8 = buffer.indexOf("OK+ANCS8");
     boolean complete = (indexANCS8 + ANCS8SIZE) <= buffer.length();
 
-    if(indexANCS8 != -1 && complete) {
+    if(indexANCS8 != -1 && complete) 
+    {
       String string = buffer.substring(indexANCS8, indexANCS8 + ANCS8SIZE);
 
       buffer = buffer.substring(indexANCS8 + ANCS8SIZE);
@@ -74,7 +85,8 @@ void BluetoothCommunication::Read() {
       Number = string.charAt(11);
       Index = string.charAt(INDEX_CATEGORY);
 
-      switch (string.charAt(INDEX_CATEGORY)) {
+      switch (string.charAt(INDEX_CATEGORY)) 
+      {
         case '1':
           INCOMINGCALL = true;
           break;

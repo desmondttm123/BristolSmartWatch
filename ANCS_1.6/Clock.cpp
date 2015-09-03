@@ -1,6 +1,7 @@
 #include "Clock.h"
 
-String Clock::GetTime() {
+String Clock::GetTime() 
+{
       String time = "";
       int second, minute, hour, 
           month, year, temperature;
@@ -10,13 +11,15 @@ String Clock::GetTime() {
       year = timer.getYear();
       temperature = timer.getTemperature();
 
-      if(hour<10){
+      if(hour<10)
+      {
         time+="0"+hour;
       } else{
         time+=hour;
       }
       time+=":";
-      if(minute < 10) {
+      if(minute < 10) 
+      {
         time+="0";
         time+=minute;
       }
@@ -26,7 +29,8 @@ String Clock::GetTime() {
       return time;
 }
 
-String Clock::GetDate() {
+String Clock::GetDate() 
+{
     String string = "";
     int date = timer.getDate();
     int DoW = timer.getDoW();
@@ -76,6 +80,7 @@ String Clock::GetDate() {
     return string;
 }
 
-int Clock::GetTemperature() {
+int Clock::GetTemperature() 
+{
     return timer.getTemperature();
 }

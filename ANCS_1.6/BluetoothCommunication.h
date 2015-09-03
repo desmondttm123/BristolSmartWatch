@@ -37,7 +37,8 @@ class BluetoothCommunication
   char Number = '0';
   char Index = '0';
 public:
-    BluetoothCommunication(SoftwareSerial *mySerial){
+    BluetoothCommunication(SoftwareSerial *mySerial)
+    {
       this->mySerial = mySerial;
     };
     void Read();

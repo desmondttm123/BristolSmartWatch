@@ -14,7 +14,8 @@
  * @return (void)
  * 
  */ 
-void Screen::DrawTime(String time) {
+void Screen::DrawTime(String time) 
+{
     u8g->setFont(u8g_font_10x20);
     u8g->setPrintPos(18, 40);
     u8g->print(time);
@@ -30,7 +31,8 @@ void Screen::DrawTime(String time) {
  * @return (void)
  * 
  */ 
-void Screen::DrawDate(String date) {
+void Screen::DrawDate(String date) 
+{
     u8g->setFont(u8g_font_5x7);
     u8g->setPrintPos(25, 50);
     u8g->print(date);
@@ -46,7 +48,8 @@ void Screen::DrawDate(String date) {
  * @return (void)
  * 
  */ 
-void Screen::DrawTemperature(int temperature) {
+void Screen::DrawTemperature(int temperature) 
+{
     u8g->setPrintPos(95, 10);
     u8g->print(temperature);
     u8g->setPrintPos(105, 6);
@@ -65,16 +68,20 @@ void Screen::DrawTemperature(int temperature) {
  * @return (void)
  * 
  */ 
-void Screen::DrawNotifications(char numOfNotifications) {
-  if (numOfNotifications != '0') {
+void Screen::DrawNotifications(char numOfNotifications) 
+{
+  if (numOfNotifications != '0') 
+  {
     u8g->setFont(u8g_font_5x7);
     u8g->setPrintPos(0, 10);
     u8g->print(numOfNotifications);
     u8g->setPrintPos(10, 10);
-    if (numOfNotifications == '1') {
+    if (numOfNotifications == '1') 
+    {
       u8g->print("New Notification");
     }
-    else {
+    else 
+    {
       u8g->print("New Notifications");
     }
   }
@@ -90,9 +97,11 @@ void Screen::DrawNotifications(char numOfNotifications) {
  * @return (void)
  * 
  */ 
-void Screen::DrawMessageSender(String sender, String subject) {
+void Screen::DrawMessageSender(String sender, String subject) 
+{
   u8g->firstPage();
-  do {
+  do 
+  {
     //Print Message Sender
     u8g->setFont(u8g_font_5x7);
     u8g->setPrintPos(0, 10);

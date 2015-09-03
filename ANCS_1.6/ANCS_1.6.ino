@@ -6,15 +6,13 @@
 #include "BluetoothCommunication.h"
 #include "Screen.h"
 
-const int arduinoLED = 17;
 
 int screen = 0;
 int screensleep = 0;
 int buttonstate = 8;
 int sleepwake = 6;
-int tiltscreen = 5;
 int vibrate = 4;
-int led = 9;
+int led = 5;
 int Number;
 // Decleration for RTC
 
@@ -24,7 +22,11 @@ U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK);
 
 Screen displayScreen(&u8g);
 
-SoftwareSerial mySerial(10, 16); // RX, TX
+/*
+ *For The older versions of the Watch, it is (10,16). All later boards
+ *Uses (10,11) as the serial
+ */
+SoftwareSerial mySerial(10, 11); // RX, TX
 
 BluetoothCommunication bluetoothCommunication(&mySerial); 
 
@@ -38,7 +40,8 @@ BluetoothCommunication bluetoothCommunication(&mySerial);
  * @return (void)
  * 
  */ 
-void DrawScreen(void) {
+void DrawScreen(void) 
+{
   u8g.firstPage();
   do {
     displayScreen.DrawNotifications(Number);
@@ -60,11 +63,8 @@ void DrawScreen(void) {
  */ 
 void setup()
 {
-  //Clock.setHour(21);
   Wire.begin();
   Serial.begin(9600);
-  pinMode(arduinoLED, OUTPUT);
-  digitalWrite(arduinoLED, LOW);
 
   //Button number 1 ************************************************************************************
   pinMode(buttonstate, INPUT_PULLUP);           // set pin to input
@@ -74,10 +74,6 @@ void setup()
   //Button number 2 ************************************************************************************
   pinMode(sleepwake, INPUT_PULLUP);           // set pin to input
   digitalWrite(sleepwake, HIGH);
-
-  //tilt screen ************************************************************************************
-  pinMode(tiltscreen, INPUT_PULLUP);           // set pin to input
-  digitalWrite(tiltscreen, LOW);
 
   // FlashLight  ************************************************************************************
   pinMode(led, OUTPUT);
@@ -99,33 +95,43 @@ void setup()
  * @return (void)
  * 
  */ 
-void checkButtons() {
+void checkButtons() 
+{
   //Goes to notification page
-  if (digitalRead(buttonstate) == LOW) {
+  if (digitalRead(buttonstate) == LOW) 
+  {
     delay(100);
-    if (screen == 0) {
+    if (screen == 0) 
+    {
       screen = 1;
     }
-    else {
+    else 
+    {
       screen = 0;
     }
   }
 
   // Turns the screen off
-  if (digitalRead(sleepwake) == LOW) {
+  if (digitalRead(sleepwake) == LOW) 
+  {
     delay(100);
-    if (screensleep == 0) {
+    if (screensleep == 0) 
+    {
       screensleep = 1;
     }
-    else {
+    else 
+    {
       screensleep = 0;
     }
   }
 
   // Turns on the Flash Light
-  if (screen == 1) {
+  if (screen == 1) 
+  {
     digitalWrite(led , HIGH);
-  } else {
+  }
+  else 
+  {
     digitalWrite(led, LOW);
   }
 }
@@ -141,10 +147,12 @@ void checkButtons() {
  * @return (void)
  * 
  */ 
-void BluetoothCommunications() {
+void BluetoothCommunications() 
+{
   bluetoothCommunication.Read();
   
-  if(bluetoothCommunication.GetNewMessage()) {
+  if(bluetoothCommunication.GetNewMessage()) 
+  {
     displayScreen.DrawMessageSender(bluetoothCommunication.GetName(), 
                                     bluetoothCommunication.GetSubject());
     bluetoothCommunication.SetNewMessage(false);
@@ -154,7 +162,8 @@ void BluetoothCommunications() {
   }
   
   int temp = bluetoothCommunication.GetNumber();
-  if(temp != Number && temp > '0') {
+  if(temp != Number && temp > '0') 
+  {
     digitalWrite(vibrate, HIGH);
     delay(300);
     digitalWrite(vibrate, LOW);
