@@ -17,7 +17,6 @@ int vibrate = 4;
 int led = 9;
 int Number;
 // Decleration for RTC
-//HELLO
 Clock clock; 
 
 U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK); 
