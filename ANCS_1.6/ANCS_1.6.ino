@@ -1,26 +1,15 @@
+//#include <U8glib.h>
+
+#include <U8glib.h>
+
 #include <SoftwareSerial.h>
-#include "U8glib.h"
+
 #include <DS3231.h>
 #include <Wire.h>
-#include "Clock.h"
-#include "BluetoothCommunication.h"
-#include "Screen.h"
+#include "Arduino.h"
+#include "Watch.h"
 
 
-int screen = 0;
-int screensleep = 0;
-int buttonstate = 8;
-int sleepwake = 6;
-int vibrate = 4;
-int led = 5;
-int Number;
-// Decleration for RTC
-
-Clock clock; 
-
-U8GLIB_SH1106_128X64 u8g(U8G_I2C_OPT_NO_ACK); 
-
-Screen displayScreen(&u8g);
 
 /*
  *For The older versions of the Watch, it is (10,16). All later boards
@@ -28,29 +17,11 @@ Screen displayScreen(&u8g);
  */
 SoftwareSerial mySerial(10, 11); // RX, TX
 
-BluetoothCommunication bluetoothCommunication(&mySerial); 
 
-/*
- * FUNCTION DrawScreen()
- * 
- * Calls all of the appropriate methods to draw all information 
- * to the screen
- * 
- * @param (void)
- * @return (void)
- * 
- */ 
-void DrawScreen(void) 
-{
-  u8g.firstPage();
-  do {
-    displayScreen.DrawNotifications(Number);
-    displayScreen.DrawTime(clock.GetTime());
-    displayScreen.DrawDate(clock.GetDate());
-    displayScreen.DrawTemperature(clock.GetTemperature());
-  }
-  while ( u8g.nextPage() );
-}
+/** Instanciate Watch **/
+
+Watch watch;
+
 
 /*
  * FUNCTION setup()
@@ -63,113 +34,18 @@ void DrawScreen(void)
  */ 
 void setup()
 {
+  /* Need to experiment with where these sit */
+  
+  //leave these two in for the moment
   Wire.begin();
   Serial.begin(9600);
-
-  //Button number 1 ************************************************************************************
-  pinMode(buttonstate, INPUT_PULLUP);           // set pin to input
-  digitalWrite(buttonstate, HIGH);
-
-
-  //Button number 2 ************************************************************************************
-  pinMode(sleepwake, INPUT_PULLUP);           // set pin to input
-  digitalWrite(sleepwake, HIGH);
-
-  // FlashLight  ************************************************************************************
-  pinMode(led, OUTPUT);
-  digitalWrite(led , LOW);
-
-  //Vibration Motor should be connected to GND  ************************************************************************************
-  pinMode(vibrate, OUTPUT);
-  digitalWrite(vibrate, LOW);
+  //leave these two in for the moment
   mySerial.begin(9600);
 
 }
 
-/*
- * FUNCTION CheckButtons()
- * 
- * Checks the states of all the hardware buttons.
- * 
- * @param (void)
- * @return (void)
- * 
- */ 
-void checkButtons() 
-{
-  //Goes to notification page
-  if (digitalRead(buttonstate) == LOW) 
-  {
-    delay(100);
-    if (screen == 0) 
-    {
-      screen = 1;
-    }
-    else 
-    {
-      screen = 0;
-    }
-  }
 
-  // Turns the screen off
-  if (digitalRead(sleepwake) == LOW) 
-  {
-    delay(100);
-    if (screensleep == 0) 
-    {
-      screensleep = 1;
-    }
-    else 
-    {
-      screensleep = 0;
-    }
-  }
 
-  // Turns on the Flash Light
-  if (screen == 1) 
-  {
-    digitalWrite(led , HIGH);
-  }
-  else 
-  {
-    digitalWrite(led, LOW);
-  }
-}
-
-/*
- * FUNCTION BluetoothCommuncations()
- * 
- * Calls BluetoothCommuncation.Read() to read any information
- * over Bluetooth. Writes a notification to the screen if 
- * there is a new notifcation and also vibrates.
- * 
- * @param (void)
- * @return (void)
- * 
- */ 
-void BluetoothCommunications() 
-{
-  bluetoothCommunication.Read();
-  
-  if(bluetoothCommunication.GetNewMessage()) 
-  {
-    displayScreen.DrawMessageSender(bluetoothCommunication.GetName(), 
-                                    bluetoothCommunication.GetSubject());
-    bluetoothCommunication.SetNewMessage(false);
-   
-    //Time to display message
-    delay(2000); 
-  }
-  
-  int temp = bluetoothCommunication.GetNumber();
-  if(temp != Number && temp > '0') 
-  {
-    digitalWrite(vibrate, HIGH);
-    delay(300);
-    digitalWrite(vibrate, LOW);
-  }
-  Number = bluetoothCommunication.GetNumber();
-}
 
 /*
  * FUNCTION Loop()
@@ -183,8 +59,8 @@ void BluetoothCommunications()
  */ 
 void loop() 
 {
-  checkButtons();  
-  DrawScreen();
-  BluetoothCommunications(); 
+  watch.CheckButtonState();  
+  watch.UpdateScreen();
+  watch.CheckNotifications(); 
 }
 

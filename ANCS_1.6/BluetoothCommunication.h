@@ -14,6 +14,7 @@
 
 class BluetoothCommunication 
 {
+  //explicitly declare as private????
   SoftwareSerial *mySerial;
   bool newMessage = false;
   char Title [15];

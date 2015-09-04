@@ -2,7 +2,7 @@
 #define SCREEN_H 
 
 #include <DS3231.h>
-#include "U8glib.h"
+//#include "U8glib.h"
 
 /*
  *  CLASS Screen
